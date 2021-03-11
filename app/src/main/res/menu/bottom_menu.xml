@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/miList"
+        android:title="Devices List"
+        android:icon="@drawable/ic_list"/>
+    <item
+        android:id="@+id/miAdd"
+        android:title="Add Device"
+        android:icon="@drawable/ic_add"/>
+    <item
+        android:id="@+id/miEdit"
+        android:title="Edit Device"
+        android:icon="@drawable/ic_edit"/>
+</menu>
