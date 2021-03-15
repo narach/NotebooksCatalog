@@ -8,18 +8,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.notebookscatalog.DeviceListAdapter
+import com.example.notebookscatalog.NotebooksApplication
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.data.DeviceItem
 import com.example.notebookscatalog.databinding.FragmentEditBinding
 import com.example.notebookscatalog.databinding.FragmentListBinding
 import com.example.notebookscatalog.helpers.UriToDrawableConverter
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
+import com.example.notebookscatalog.viewmodels.BrandViewModel
+import com.example.notebookscatalog.viewmodels.BrandViewModelFactory
 import com.example.notebookscatalog.viewmodels.DeviceListviewModel
 
-class EditFragment(private val navigation: IFragmentCommunication) : Fragment(R.layout.fragment_edit) {
+class EditFragment(
+    private val navigation: IFragmentCommunication,
+    private val brandViewModel: BrandViewModel
+) : Fragment(R.layout.fragment_edit) {
 
     private var imgUri: Uri? = null
     private val selImgCode = 1
@@ -30,12 +40,19 @@ class EditFragment(private val navigation: IFragmentCommunication) : Fragment(R.
     private val deviceListViewModel: DeviceListviewModel by activityViewModels()
     private var selectedItem: DeviceItem = DeviceItem(null, "", null, null)
 
+    private lateinit var fContext: Context
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentEditBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        this.fContext = context
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +70,6 @@ class EditFragment(private val navigation: IFragmentCommunication) : Fragment(R.
                 selectedItem.model = etModelEdit.text.toString()
                 selectedItem.hardware = etHardwareEdit.text.toString()
                 selectedItem.screen = etScreenEdit.text.toString()
-//                deviceListViewModel.updateDeviceAtPosition(se)
                 navigation.listDevices()
             }
 
@@ -62,6 +78,22 @@ class EditFragment(private val navigation: IFragmentCommunication) : Fragment(R.
                 intent.type = "image/*"
                 startActivityForResult(intent, selImgCode)
             }
+
+            brandViewModel.allBrands.observe(
+                viewLifecycleOwner, Observer { brands ->
+                    val brandNames = mutableListOf<String>()
+                    brands.forEach { brand ->
+                        brandNames.add(brand.name)
+                    }
+                    val spBrandsAdapter = ArrayAdapter<String>(
+                        fContext,
+                        android.R.layout.simple_spinner_item,
+                        brandNames
+                    )
+                    spBrandsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spBrand.adapter = spBrandsAdapter
+                }
+            )
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.notebookscatalog.data
 
 import android.graphics.drawable.Drawable
-import android.os.Parcelable
 import java.io.Serializable
 
 data class DeviceItem(
