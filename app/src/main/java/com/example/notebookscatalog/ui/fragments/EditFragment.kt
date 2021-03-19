@@ -1,4 +1,4 @@
-package com.example.notebookscatalog.fragments
+package com.example.notebookscatalog.ui.fragments
 
 import android.app.Activity
 import android.content.Context
@@ -106,6 +106,7 @@ class EditFragment(
                     selectedItem.model = ""
                 }
             }
+
         }
     }
 

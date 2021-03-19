@@ -9,10 +9,10 @@ import com.example.notebookscatalog.NotebooksApplication
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.data.DeviceItem
 import com.example.notebookscatalog.databinding.ActivityMainBinding
-import com.example.notebookscatalog.fragments.EditFragment
-import com.example.notebookscatalog.fragments.ListFragment
-import com.example.notebookscatalog.helpers.InitHelper
+import com.example.notebookscatalog.ui.fragments.EditFragment
+import com.example.notebookscatalog.ui.fragments.ListFragment
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
+import com.example.notebookscatalog.ui.fragments.AddFragment
 import com.example.notebookscatalog.viewmodels.*
 
 class MainActivity : AppCompatActivity(), IFragmentCommunication  {
@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
     private lateinit var binding: ActivityMainBinding
     private lateinit var fDevicesList: ListFragment
     private lateinit var fDeviceEdit: EditFragment
+    private lateinit var fDeviceAdd: AddFragment
 
     private val brandViewModel: BrandViewModel by viewModels {
         BrandViewModelFactory((application as NotebooksApplication).brandRepository)
@@ -37,12 +38,13 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
 
         fDevicesList = ListFragment(this, deviceViewModel)
         fDeviceEdit = EditFragment(this, brandViewModel)
+        fDeviceAdd = AddFragment(this, brandViewModel)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.miList -> setCurrentFragment(fDevicesList)
                 R.id.miEdit -> setCurrentFragment(fDeviceEdit)
-                R.id.miAdd -> Toast.makeText(this, "Fragment is not created yet", Toast.LENGTH_SHORT).show()
+                R.id.miAdd -> setCurrentFragment(fDeviceAdd)
             }
             true
         }

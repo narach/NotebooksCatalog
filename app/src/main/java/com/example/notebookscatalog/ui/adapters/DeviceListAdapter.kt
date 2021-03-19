@@ -1,4 +1,4 @@
-package com.example.notebookscatalog
+package com.example.notebookscatalog.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

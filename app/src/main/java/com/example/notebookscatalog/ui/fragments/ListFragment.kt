@@ -1,4 +1,4 @@
-package com.example.notebookscatalog.fragments
+package com.example.notebookscatalog.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.notebookscatalog.DeviceListAdapter
+import com.example.notebookscatalog.ui.adapters.DeviceListAdapter
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.databinding.FragmentListBinding
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
