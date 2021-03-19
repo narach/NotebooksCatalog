@@ -9,14 +9,14 @@ import com.example.notebookscatalog.db.enums.DeviceType
 data class Device(
     @ColumnInfo(index = true)
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    var id: Int?,
     @ColumnInfo(name = "brand_name")
-    val brandName: String,
-    val model: String,
+    var brandName: String,
+    var model: String,
     @ColumnInfo(name = "img_uri")
-    val imgUri: String?,
-    val screen: String,
-    val hardware: String,
+    var imgUri: String?,
+    var screen: String,
+    var hardware: String,
     @ColumnInfo(name = "device_type")
-    val deviceType: DeviceType
+    var deviceType: DeviceType
 )

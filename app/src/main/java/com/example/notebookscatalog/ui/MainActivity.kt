@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
     private lateinit var fDevicesList: ListFragment
     private lateinit var fDeviceEdit: EditFragment
 
-    private val deviceListviewModel: DeviceListviewModel by viewModels()
-
     private val brandViewModel: BrandViewModel by viewModels {
         BrandViewModelFactory((application as NotebooksApplication).brandRepository)
     }
@@ -36,8 +34,6 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val rootView = binding.root
         setContentView(rootView)
-
-        deviceListviewModel.loadDevices(InitHelper.initDevicesList(this))
 
         fDevicesList = ListFragment(this, deviceViewModel)
         fDeviceEdit = EditFragment(this, brandViewModel)
@@ -63,11 +59,9 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
 
     override fun createDevice() {
         binding.bottomNavigationView.selectedItemId = R.id.miAdd
-//        setCurrentFragment()
     }
 
     override fun updateDevice(index: Int) {
-        deviceListviewModel.selectItem(index)
         binding.bottomNavigationView.selectedItemId = R.id.miEdit
         setCurrentFragment(fDeviceEdit)
     }
