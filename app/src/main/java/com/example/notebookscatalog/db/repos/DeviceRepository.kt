@@ -20,4 +20,12 @@ class DeviceRepository(private val deviceDao: DeviceDao) {
     suspend fun update(device: Device) {
         deviceDao.update(device)
     }
+
+    @Suppress("RedundantSuspendModifier")
+    @WorkerThread
+    suspend fun delete(device: Device) {
+        device.id?.let { deviceId ->
+            deviceDao.delete(deviceId)
+        }
+    }
 }

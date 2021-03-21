@@ -35,10 +35,10 @@ abstract class DevicesDatabase : RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            INSTANCE?.let { db ->
+            INSTANCE?.let { database ->
                 scope.launch {
-                    populateBrands(db.brandDao())
-                    prePopulateDevices(db.deviceDao())
+                    populateBrands(database.brandDao())
+                    prePopulateDevices(database.deviceDao())
                 }
             }
         }
@@ -67,13 +67,13 @@ abstract class DevicesDatabase : RoomDatabase() {
             val devicesList = listOf(
                 Device(null, "Asus", "TUF Gaming F15",
                 "https://content2.onliner.by/catalog/device/header/5d591589287bdfe724068e346033c6cc.jpeg",
-                "15.6, 1920 x 1080", "Intel Core I5, 16Gb RAM, 512Gb SSD, 4Gb Video", DeviceType.NOTEBOOK),
+                "15.6, 1920 x 1080", "Intel Core I5, 16Gb RAM, 512Gb SSD, 4Gb Video", DeviceType.Notebook),
                 Device(null, "HONOR", "Magic 14 2020 53010 VTY",
                     "https://content2.onliner.by/catalog/device/header/3ca32c20c4104d66bc0bf2155d9b85b6.jpeg",
-                    "14.0, 1920 x 1080", "AMD Ryzen 5, 8Gb RAM, 512Gb SSD", DeviceType.NOTEBOOK),
+                    "14.0, 1920 x 1080", "AMD Ryzen 5, 8Gb RAM, 512Gb SSD", DeviceType.Notebook),
                 Device(null, "Apple", "Macbook Air 13 M1 2020",
                     "https://content2.onliner.by/catalog/device/header/9a08e5f5400e508fb975bf697669c2b5.jpeg",
-                    "13.3, 2560 x 1600", "Apple M1, 8Gb RAM, 256Gb SSD, M1 GPU Video", DeviceType.NOTEBOOK)
+                    "13.3, 2560 x 1600", "Apple M1, 8Gb RAM, 256Gb SSD, M1 GPU Video", DeviceType.Notebook)
             )
 
             devicesList.forEach { device ->

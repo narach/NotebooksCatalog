@@ -1,19 +1,21 @@
 package com.example.notebookscatalog.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.notebookscatalog.NotebooksApplication
 import com.example.notebookscatalog.R
-import com.example.notebookscatalog.data.DeviceItem
 import com.example.notebookscatalog.databinding.ActivityMainBinding
-import com.example.notebookscatalog.ui.fragments.EditFragment
-import com.example.notebookscatalog.ui.fragments.ListFragment
+import com.example.notebookscatalog.db.entities.Device
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
 import com.example.notebookscatalog.ui.fragments.AddFragment
-import com.example.notebookscatalog.viewmodels.*
+import com.example.notebookscatalog.ui.fragments.EditFragment
+import com.example.notebookscatalog.ui.fragments.ListFragment
+import com.example.notebookscatalog.viewmodels.BrandViewModel
+import com.example.notebookscatalog.viewmodels.BrandViewModelFactory
+import com.example.notebookscatalog.viewmodels.DeviceViewModel
+import com.example.notebookscatalog.viewmodels.DeviceViewModelFactory
 
 class MainActivity : AppCompatActivity(), IFragmentCommunication  {
 
@@ -37,8 +39,8 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
         setContentView(rootView)
 
         fDevicesList = ListFragment(this, deviceViewModel)
-        fDeviceEdit = EditFragment(this, brandViewModel)
-        fDeviceAdd = AddFragment(this, brandViewModel)
+        fDeviceEdit = EditFragment(this, deviceViewModel)
+        fDeviceAdd = AddFragment(this, brandViewModel, deviceViewModel)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
@@ -63,17 +65,15 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
         binding.bottomNavigationView.selectedItemId = R.id.miAdd
     }
 
-    override fun updateDevice(index: Int) {
+    override fun updateDevice(deviceItem: Device) {
         binding.bottomNavigationView.selectedItemId = R.id.miEdit
+        fDeviceEdit.selectedItem = deviceItem
         setCurrentFragment(fDeviceEdit)
     }
 
     override fun listDevices() {
-        binding.bottomNavigationView.selectedItemId = R.id.miEdit
+        binding.bottomNavigationView.selectedItemId = R.id.miList
         setCurrentFragment(fDevicesList)
     }
 
-    override fun onDeviceCreated(device: DeviceItem?) {
-        TODO("Not yet implemented")
-    }
 }

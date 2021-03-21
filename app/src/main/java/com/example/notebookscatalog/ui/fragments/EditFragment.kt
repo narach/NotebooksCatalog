@@ -8,22 +8,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.databinding.FragmentEditBinding
-import com.example.notebookscatalog.db.entities.Brand
 import com.example.notebookscatalog.db.entities.Device
-import com.example.notebookscatalog.db.enums.DeviceType
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
-import com.example.notebookscatalog.viewmodels.BrandViewModel
+import com.example.notebookscatalog.viewmodels.DeviceViewModel
 
 class EditFragment(
     private val navigation: IFragmentCommunication,
-    private val brandViewModel: BrandViewModel
+    private val deviceViewModel: DeviceViewModel
 ) : Fragment(R.layout.fragment_edit) {
 
     private var imgUri: Uri? = null
@@ -31,8 +27,7 @@ class EditFragment(
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
-//    private var selectedItem: DeviceItem = DeviceItem(null, "", null, null)
-    private val selectedItem: Device = Device(null, "", "", null, "", "", DeviceType.NOTEBOOK)
+    lateinit var selectedItem: Device
 
     private lateinit var fContext: Context
 
@@ -47,7 +42,7 @@ class EditFragment(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,7 +59,9 @@ class EditFragment(
             etModelEdit.setText(selectedItem.model)
             etScreenEdit.setText(selectedItem.screen)
             etHardwareEdit.setText(selectedItem.hardware)
+
             ivDeviceEdit.setImageURI(Uri.parse(selectedItem.imgUri))
+            Glide.with(fContext).load(selectedItem.imgUri).into(ivDeviceEdit)
 
             binding.btnSave.setOnClickListener {
                 selectedItem.model = etModelEdit.text.toString()
@@ -77,33 +74,6 @@ class EditFragment(
                 Intent(Intent.ACTION_PICK).also {
                     it.type = "image/*"
                     selImageLauncher.launch(it)
-                }
-            }
-
-            brandViewModel.allBrands.observe(
-                viewLifecycleOwner, Observer { brands ->
-                    val spBrandsAdapter = ArrayAdapter(
-                        fContext,
-                        android.R.layout.simple_spinner_item,
-                        brands
-                    )
-                    spBrand.adapter = spBrandsAdapter
-                }
-            )
-
-            spBrand.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    val brand = spBrand.selectedItem as Brand
-                    selectedItem.model = brand.name
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    selectedItem.model = ""
                 }
             }
 

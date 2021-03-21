@@ -1,5 +1,6 @@
 package com.example.notebookscatalog.ui.adapters
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +11,15 @@ import com.bumptech.glide.Glide
 import com.example.notebookscatalog.databinding.ItemDeviceBinding
 import com.example.notebookscatalog.db.entities.Device
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
+import com.example.notebookscatalog.viewmodels.DeviceViewModel
 
 class DeviceListAdapter(
-        private val navigation: IFragmentCommunication) :
+        private val navigation: IFragmentCommunication,
+        private val deviceViewModel: DeviceViewModel) :
     ListAdapter<Device, DeviceListAdapter.DevicesViewHolder>(DeviceComparator()) {
+
+    private var alertDialog: AlertDialog? = null
+    private var context: Context? = null
 
     class DevicesViewHolder(private val itemDeviceBinding: ItemDeviceBinding)
         : RecyclerView.ViewHolder(itemDeviceBinding.root) {
@@ -34,6 +40,7 @@ class DeviceListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DevicesViewHolder {
+        context = parent.context
         return DevicesViewHolder.create(parent)
     }
 
@@ -42,8 +49,29 @@ class DeviceListAdapter(
         val deviceItem = getItem(position)
         holder.bind(deviceItem, context)
         holder.itemView.setOnClickListener {
-            navigation.updateDevice(position)
+            val selectedItem = getItem(position).copy()
+            navigation.updateDevice(selectedItem)
         }
+        holder.itemView.setOnLongClickListener {
+            val selectedItem = getItem(position)
+            showDeleteDialog(selectedItem)
+            true
+        }
+    }
+
+    private fun showDeleteDialog(deviceItem: Device) {
+        val builder = AlertDialog.Builder(context)
+        builder.run {
+            setTitle("Delete item")
+            setMessage("Are you really want to delete an item?")
+            setPositiveButton("Yes") { _, _ ->
+                deviceViewModel.delete(deviceItem)
+            }
+            setNegativeButton("Cancel") {_, _ ->
+            }
+        }
+        alertDialog = builder.create()
+        alertDialog?.show()
     }
 
     class DeviceComparator : DiffUtil.ItemCallback<Device>() {

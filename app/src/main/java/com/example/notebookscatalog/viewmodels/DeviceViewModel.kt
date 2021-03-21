@@ -9,12 +9,18 @@ class DeviceViewModel(private val repository: DeviceRepository) : ViewModel() {
 
     val devicesData: LiveData<List<Device>> = repository.allDevices.asLiveData()
 
+    var selectedItem: LiveData<Device>? = null
+
     fun insert(device: Device) = viewModelScope.launch {
         repository.insert(device)
     }
 
     fun update(device: Device) = viewModelScope.launch {
         repository.update(device)
+    }
+
+    fun delete(device: Device) = viewModelScope.launch {
+        repository.delete(device)
     }
 }
 
