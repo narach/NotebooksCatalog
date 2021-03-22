@@ -11,6 +11,9 @@ import com.example.notebookscatalog.db.dao.BrandDao
 import com.example.notebookscatalog.db.dao.DeviceDao
 import com.example.notebookscatalog.db.entities.Brand
 import com.example.notebookscatalog.db.entities.Device
+import com.example.notebookscatalog.db.entities.Model
+import com.example.notebookscatalog.db.entities.Spec
+import com.example.notebookscatalog.db.entities.relations.ModelSpecCrossRef
 import com.example.notebookscatalog.db.enums.DeviceType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -18,7 +21,10 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         Brand::class,
-        Device::class
+        Device::class,
+        Model::class,
+        Spec::class,
+        ModelSpecCrossRef::class
     ],
     version = 1,
     exportSchema = false
@@ -96,6 +102,7 @@ abstract class DevicesDatabase : RoomDatabase() {
                     DevicesDatabase::class.java,
                     "devices_database"
                 )
+//                    .fallbackToDestructiveMigration()
                     .addCallback(DeviceDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
