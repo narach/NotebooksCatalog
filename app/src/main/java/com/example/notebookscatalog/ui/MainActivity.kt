@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import com.example.notebookscatalog.NotebooksApplication
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.databinding.ActivityMainBinding
-import com.example.notebookscatalog.db.entities.Device
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
 import com.example.notebookscatalog.ui.fragments.AddFragment
 import com.example.notebookscatalog.ui.fragments.EditFragment
@@ -65,9 +64,8 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
         binding.bottomNavigationView.selectedItemId = R.id.miAdd
     }
 
-    override fun updateDevice(deviceItem: Device) {
+    override fun updateDevice() {
         binding.bottomNavigationView.selectedItemId = R.id.miEdit
-        fDeviceEdit.selectedItem = deviceItem
         setCurrentFragment(fDeviceEdit)
     }
 

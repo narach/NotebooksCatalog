@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.notebookscatalog.R
 import com.example.notebookscatalog.databinding.FragmentEditBinding
-import com.example.notebookscatalog.db.entities.Device
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
 import com.example.notebookscatalog.viewmodels.DeviceViewModel
 
@@ -26,8 +26,6 @@ class EditFragment(
 
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
-
-    lateinit var selectedItem: Device
 
     private lateinit var fContext: Context
 
@@ -56,17 +54,25 @@ class EditFragment(
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            etModelEdit.setText(selectedItem.model)
-            etScreenEdit.setText(selectedItem.screen)
-            etHardwareEdit.setText(selectedItem.hardware)
 
-            ivDeviceEdit.setImageURI(Uri.parse(selectedItem.imgUri))
-            Glide.with(fContext).load(selectedItem.imgUri).into(ivDeviceEdit)
+            deviceViewModel.selectedItem.observe(viewLifecycleOwner, Observer { device ->
+                etModelEdit.setText(device.model)
+                etScreenEdit.setText(device.screen)
+                etHardwareEdit.setText(device.hardware)
+                Glide.with(fContext).load(device.imgUri).into(ivDeviceEdit)
+            })
 
-            binding.btnSave.setOnClickListener {
-                selectedItem.model = etModelEdit.text.toString()
-                selectedItem.hardware = etHardwareEdit.text.toString()
-                selectedItem.screen = etScreenEdit.text.toString()
+            btnSave.setOnClickListener {
+
+                deviceViewModel.selectedItem.value?.let { device ->
+                    device.model = etModelEdit.text.toString()
+                    device.hardware = etHardwareEdit.text.toString()
+                    device.screen = etScreenEdit.text.toString()
+                    imgUri?.let {
+                        device.imgUri = it.toString()
+                    }
+                    deviceViewModel.update(device)
+                }
                 navigation.listDevices()
             }
 

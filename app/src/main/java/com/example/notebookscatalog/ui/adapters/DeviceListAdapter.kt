@@ -49,8 +49,8 @@ class DeviceListAdapter(
         val deviceItem = getItem(position)
         holder.bind(deviceItem, context)
         holder.itemView.setOnClickListener {
-            val selectedItem = getItem(position).copy()
-            navigation.updateDevice(selectedItem)
+            deviceViewModel.selectItem(position)
+            navigation.updateDevice()
         }
         holder.itemView.setOnLongClickListener {
             val selectedItem = getItem(position)

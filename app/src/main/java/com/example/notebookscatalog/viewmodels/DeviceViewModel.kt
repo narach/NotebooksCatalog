@@ -9,7 +9,7 @@ class DeviceViewModel(private val repository: DeviceRepository) : ViewModel() {
 
     val devicesData: LiveData<List<Device>> = repository.allDevices.asLiveData()
 
-    var selectedItem: LiveData<Device>? = null
+    var selectedItem: MutableLiveData<Device> = MutableLiveData()
 
     fun insert(device: Device) = viewModelScope.launch {
         repository.insert(device)
@@ -21,6 +21,12 @@ class DeviceViewModel(private val repository: DeviceRepository) : ViewModel() {
 
     fun delete(device: Device) = viewModelScope.launch {
         repository.delete(device)
+    }
+
+    fun selectItem(devicePos: Int) {
+        devicesData.value?.let { devicesList ->
+            this.selectedItem.postValue(devicesList[devicePos])
+        }
     }
 }
 

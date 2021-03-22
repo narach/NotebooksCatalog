@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp">
@@ -11,6 +10,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/empty_device"
+        android:contentDescription="@string/device_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,18 +29,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:ems="10"
-        android:hint="Model"
+        android:hint="@string/model"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/ivDeviceAdd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivDeviceAdd" />
+        app:layout_constraintStart_toEndOf="@+id/ivDeviceAdd"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Device Type"
+        android:text="@string/device_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivDeviceAdd" />
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
-            android:text="Notebook"
+            android:text="@string/notebook"
             app:layout_constraintEnd_toStartOf="@+id/rbPhone"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Smartphone"
+            android:text="@string/smartphone"
             app:layout_constraintEnd_toStartOf="@+id/rbTablet"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rbNote"
@@ -82,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tablet"
+            android:text="@string/tablet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rbPhone"
@@ -95,11 +96,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="Hardware"
+        android:hint="@string/hardware"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgDeviceType" />
+        app:layout_constraintTop_toBottomOf="@+id/rgDeviceType"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/etScreenAdd"
@@ -107,17 +109,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="Screen"
+        android:hint="@string/screen"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etHardwareAdd" />
+        app:layout_constraintTop_toBottomOf="@+id/etHardwareAdd"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btnAddNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Save"
+        android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etScreenAdd" />
