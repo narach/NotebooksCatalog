@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,11 +31,13 @@ class AddFragment(
     private val deviceViewModel: DeviceViewModel
 ) : Fragment(R.layout.fragment_add) {
 
+    private val logTag = "AddFragment"
+
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var fContext: Context
-    private var newDevice: Device = Device(null, "", "", "", "", "", DeviceType.Notebook)
+    private var newDevice: Device = Device(null, "", "", "", "", DeviceType.Notebook, null)
 
     private val selImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -48,18 +51,69 @@ class AddFragment(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         this.fContext = context
+        Log.d(logTag, "Attach to Activity")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(logTag, "Created")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d(logTag, "View is creating")
         _binding = FragmentAddBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.etModelAdd.setText("")
+        binding.etScreenAdd.setText("")
+        _binding = null
+        Log.d(logTag, "ViewDestroyed")
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        Log.d(logTag, "View State restored")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(logTag, "Started")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(logTag,"Resumed")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(logTag, "Paused")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(logTag, "Stopped")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(logTag,"Destroyed")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d(logTag, "Detached")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(logTag, "View created")
 
         with(binding) {
 
@@ -125,7 +179,7 @@ class AddFragment(
 
             btnAddNew.setOnClickListener {
                 newDevice.hardware = etHardwareAdd.text.toString()
-                newDevice.screen = etScreenAdd.text.toString()
+//                newDevice.screen = etScreenAdd.text.toString()
                 deviceViewModel.insert(newDevice)
                 navigation.listDevices()
             }

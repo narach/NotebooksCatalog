@@ -57,7 +57,7 @@ class EditFragment(
 
             deviceViewModel.selectedItem.observe(viewLifecycleOwner, Observer { device ->
                 etModelEdit.setText(device.model)
-                etScreenEdit.setText(device.screen)
+//                etScreenEdit.setText(device.screen)
                 etHardwareEdit.setText(device.hardware)
                 Glide.with(fContext).load(device.imgUri).into(ivDeviceEdit)
             })
@@ -67,7 +67,7 @@ class EditFragment(
                 deviceViewModel.selectedItem.value?.let { device ->
                     device.model = etModelEdit.text.toString()
                     device.hardware = etHardwareEdit.text.toString()
-                    device.screen = etScreenEdit.text.toString()
+//                    device.screen = etScreenEdit.text.toString()
                     imgUri?.let {
                         device.imgUri = it.toString()
                     }

@@ -27,7 +27,7 @@ class DeviceListAdapter(
         fun bind(deviceItem: Device, context: Context) {
             Glide.with(context).load(deviceItem.imgUri).into(itemDeviceBinding.ivDevice)
             itemDeviceBinding.tvModel.text = "${deviceItem.brandName}: ${deviceItem.model} "
-            itemDeviceBinding.tvScreen.text = deviceItem.screen
+//            itemDeviceBinding.tvScreen.text = deviceItem.screen
             itemDeviceBinding.tvHardware.text = deviceItem.hardware
         }
 
@@ -83,8 +83,8 @@ class DeviceListAdapter(
             return oldItem.brandName == newItem.brandName &&
                     oldItem.model == newItem.model &&
                     oldItem.deviceType == newItem.deviceType &&
-                    oldItem.hardware == newItem.hardware &&
-                    oldItem.screen == newItem.screen
+                    oldItem.hardware == newItem.hardware
+//                    && oldItem.screen == newItem.screen
         }
 
     }
