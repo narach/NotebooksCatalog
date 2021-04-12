@@ -1,25 +1,35 @@
-package com.example.notebookscatalog
+package com.example.notebookscatalog.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.notebookscatalog.data.DeviceItem
+import com.example.notebookscatalog.NotebooksApplication
+import com.example.notebookscatalog.R
 import com.example.notebookscatalog.databinding.ActivityMainBinding
-import com.example.notebookscatalog.fragments.EditFragment
-import com.example.notebookscatalog.fragments.ListFragment
-import com.example.notebookscatalog.helpers.InitHelper
 import com.example.notebookscatalog.interfaces.IFragmentCommunication
-import com.example.notebookscatalog.viewmodels.DeviceListviewModel
+import com.example.notebookscatalog.ui.fragments.AddFragment
+import com.example.notebookscatalog.ui.fragments.EditFragment
+import com.example.notebookscatalog.ui.fragments.ListFragment
+import com.example.notebookscatalog.viewmodels.BrandViewModel
+import com.example.notebookscatalog.viewmodels.BrandViewModelFactory
+import com.example.notebookscatalog.viewmodels.DeviceViewModel
+import com.example.notebookscatalog.viewmodels.DeviceViewModelFactory
 
 class MainActivity : AppCompatActivity(), IFragmentCommunication  {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var fDevicesList: ListFragment
     private lateinit var fDeviceEdit: EditFragment
+    private lateinit var fDeviceAdd: AddFragment
 
-    private val deviceListviewModel: DeviceListviewModel by viewModels()
+    private val brandViewModel: BrandViewModel by viewModels {
+        BrandViewModelFactory((application as NotebooksApplication).brandRepository)
+    }
+
+    private val deviceViewModel: DeviceViewModel by viewModels {
+        DeviceViewModelFactory((application as NotebooksApplication).deviceRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,16 +37,15 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
         val rootView = binding.root
         setContentView(rootView)
 
-        deviceListviewModel.loadDevices(InitHelper.initDevicesList(this))
-
-        fDevicesList = ListFragment(this)
-        fDeviceEdit = EditFragment(this)
+        fDevicesList = ListFragment(this, deviceViewModel)
+        fDeviceEdit = EditFragment(this, deviceViewModel)
+        fDeviceAdd = AddFragment(this, brandViewModel, deviceViewModel)
 
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.miList -> setCurrentFragment(fDevicesList)
                 R.id.miEdit -> setCurrentFragment(fDeviceEdit)
-                R.id.miAdd -> Toast.makeText(this, "Fragment is not created yet", Toast.LENGTH_SHORT).show()
+                R.id.miAdd -> setCurrentFragment(fDeviceAdd)
             }
             true
         }
@@ -53,21 +62,16 @@ class MainActivity : AppCompatActivity(), IFragmentCommunication  {
 
     override fun createDevice() {
         binding.bottomNavigationView.selectedItemId = R.id.miAdd
-//        setCurrentFragment()
     }
 
-    override fun updateDevice(index: Int) {
-        deviceListviewModel.selectItem(index)
+    override fun updateDevice() {
         binding.bottomNavigationView.selectedItemId = R.id.miEdit
         setCurrentFragment(fDeviceEdit)
     }
 
     override fun listDevices() {
-        binding.bottomNavigationView.selectedItemId = R.id.miEdit
+        binding.bottomNavigationView.selectedItemId = R.id.miList
         setCurrentFragment(fDevicesList)
     }
 
-    override fun onDeviceCreated(device: DeviceItem?) {
-        TODO("Not yet implemented")
-    }
 }
